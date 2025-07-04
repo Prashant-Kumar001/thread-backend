@@ -2,8 +2,6 @@ import AppError from '../utils/appError.js';
 
 export default (err, _req, _res, next) => {
 
-  console.log('Error occurred:', err);
-
 
   if (err instanceof AppError) return next(err);
 

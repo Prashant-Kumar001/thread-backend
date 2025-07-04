@@ -435,8 +435,6 @@ export const getThreads = catchAsync(async (req, res, next) => {
 
 export const getReplies = catchAsync(async (req, res, next) => {
   const { username } = req.params;
-  console.log("hello from get replies");
-  console.log(username);
   if (!username) {
     return next(new AppError("Unauthorized: user not found.", 401));
   }
