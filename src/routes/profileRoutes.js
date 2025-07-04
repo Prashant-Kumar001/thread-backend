@@ -6,7 +6,7 @@ import {
   toggleFollow,
   searchProfiles,
   getFollows,
-  generateBio,
+  // generateBio,
 } from "../controllers/profileController.js";
 import {
   likeProfile,
@@ -28,7 +28,7 @@ router.get("/search", searchProfiles);
 
 router.post("/like/:username", likeProfile);
 
-router.post("/generate-bio", generateBio);
+// router.post("/generate-bio", generateBio);
 
 
 export default router;

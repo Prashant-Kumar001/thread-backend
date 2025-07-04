@@ -3,7 +3,7 @@ import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
 import { uploadThreadAvatar } from "../utils/features.js";
 import mongoose from "mongoose";
-import openai from '../utils/openAi.js'
+// import openai from '../utils/openAi.js'
 
 
 export const getProfile = catchAsync(async (req, res, next) => {
@@ -265,31 +265,31 @@ export const likeProfile = catchAsync(async (req, res, next) => {
   });
 });
 
-export const generateBio = catchAsync(async (req, res, next) => {
-  const userId = req.user.id;
+// export const generateBio = catchAsync(async (req, res, next) => {
+//   const userId = req.user.id;
 
-  if (!userId) return next(new AppError("login required", 400));
+//   if (!userId) return next(new AppError("login required", 400));
 
-  const user = await User.findById(userId);
-  if (!user) return next(new AppError("User not found", 404));
+//   const user = await User.findById(userId);
+//   if (!user) return next(new AppError("User not found", 404));
 
-  const prompt = `
-    Generate a short, creative user bio using the following details:
+//   const prompt = `
+//     Generate a short, creative user bio using the following details:
 
-    Name: ${user.displayName || user.username}
-    Interests: ${user.interests?.join(", ") || "Not specified"}
-    Website: ${user.website || "Not specified"}
+//     Name: ${user.displayName || user.username}
+//     Interests: ${user.interests?.join(", ") || "Not specified"}
+//     Website: ${user.website || "Not specified"}
 
-    Keep it friendly and under 200 characters.
-    `;
+//     Keep it friendly and under 200 characters.
+//     `;
 
-  const aiResponse = await openai.chat.completions.create({
-    messages: [{ role: "user", content: prompt }],
-    model: "gpt-3.5-turbo",
-  });
+//   const aiResponse = await openai.chat.completions.create({
+//     messages: [{ role: "user", content: prompt }],
+//     model: "gpt-3.5-turbo",
+//   });
 
 
-  const bio = aiResponse.choices[0].message.content.trim();
+//   const bio = aiResponse.choices[0].message.content.trim();
 
-  res.status(200).json({ status: "success", userID: userId, bio: bio });
-});
+//   res.status(200).json({ status: "success", userID: userId, bio: bio });
+// });
