@@ -7,7 +7,7 @@ import profileRoutes from './src/routes/profileRoutes.js';
 import threadRoutes from './src/routes/threadRoutes.js';
 import errorConverter from './src/middlewares/errorConverter.js';
 import errorHandler from './src/middlewares/errorHandler.js';
-import AppError from './src/utils/AppError.js';
+import AppError from './src/utils/appError.js';
 import connectDB from './src/utils/db.js';
 import cookieParser from 'cookie-parser';
 
@@ -18,7 +18,11 @@ const app = express();
 app.use(helmet());
 app.use(cors(
   {
-    origin: 'http://localhost:5173',
+    origin: [
+      process.env.CLIENT_URL,
+      'http://localhost:5173',
+      'http://localhost:5174',
+    ],
     credentials: true,
   }
 ));
