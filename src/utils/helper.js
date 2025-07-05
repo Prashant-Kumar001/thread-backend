@@ -16,7 +16,7 @@ const hmacHash = token =>
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'Strict', 
+  sameSite: 'none', 
   maxAge: REFRESH_MAX_AGE_MS,
 };
 

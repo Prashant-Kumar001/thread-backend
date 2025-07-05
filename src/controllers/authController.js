@@ -49,7 +49,6 @@ export const register = catchAsync(async (req, res, next) => {
   user.lastSeenAt = new Date();
   await user.save();
 
-
   res.cookie("refreshToken", refreshToken, cookieOptions);
   res.status(201).json({
     status: "success",
@@ -57,7 +56,6 @@ export const register = catchAsync(async (req, res, next) => {
     user: { id: user._id, username: user.username, email: user.email },
   });
 });
-
 
 export const login = catchAsync(async (req, res, next) => {
   const { email: identifier, password } = req.body || {};
@@ -69,8 +67,6 @@ export const login = catchAsync(async (req, res, next) => {
   }).select("+password +refreshTokens");
   if (!user || !(await user.comparePw(password)))
     return next(new AppError("Invalid credentials", 401));
-
-
   user.refreshTokens = user.refreshTokens.filter(
     (rt) => rt.expiresAt > Date.now()
   );
@@ -97,11 +93,18 @@ export const login = catchAsync(async (req, res, next) => {
   user.lastSeenAt = new Date();
   await user.save();
 
-
   res.cookie("refreshToken", refreshToken, cookieOptions);
-  res.json({ accessToken, user: { id: user._id, username: user.username } });
+  res.json({
+    accessToken,
+    user: {
+      username: user.username,
+      email: user.email,
+      avatar: user.avatar,
+      refresh: true,
+      id: user._id,
+    },
+  });
 });
-
 
 export const refresh = catchAsync(async (req, res, next) => {
   const token = req.cookies?.refreshToken;
@@ -168,13 +171,11 @@ export const refresh = catchAsync(async (req, res, next) => {
       username: user.username,
       email: user.email,
       avatar: user.avatar,
-      loggedIn: true,
+      refresh: true,
       id: user._id,
-    }
-
+    },
   });
 });
-
 
 export const logout = catchAsync(async (req, res, next) => {
   const token = req.cookies?.refreshToken;
@@ -195,12 +196,9 @@ export const logout = catchAsync(async (req, res, next) => {
   res.status(204).end();
 });
 
-
 export const logoutAll = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
   await User.findByIdAndUpdate(userId, { $set: { refreshTokens: [] } });
   res.clearCookie("refreshToken", cookieOptions);
   res.status(204).end();
 });
-
-
