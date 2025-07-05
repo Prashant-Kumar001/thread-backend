@@ -30,14 +30,14 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to the API', status: 'success', admin: true, version: '1.0.0' });
+});
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/thread', threadRoutes);
 
-app.use('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome to the API', status: 'success', admin: true, version: '1.0.0' });
-});
 
 
 app.use((req, res, next) => {
